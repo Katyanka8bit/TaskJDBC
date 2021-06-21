@@ -8,23 +8,25 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        UserService u1 = new UserServiceImpl();
+        UserService userService = new UserServiceImpl();
 
-        u1.createUsersTable();
+        final User user1 = new User("Ivan", "Ivanov", (byte) 4);
+        User user2 = new User("Pavel", "Ivanov", (byte) 25);
+        User user3 = new User("Petya", "Ivanov", (byte) 50);
+        User user4 = new User("Andrew", "Ivanov", (byte) 99);
 
-        u1.saveUser("Ivan", "Petrov", (byte) 25);
-        u1.saveUser("Ilya", "Petrov", (byte) 56);
-        u1.saveUser("Maria", "Petrova", (byte) 99);
-        u1.saveUser("Katya", "Sosedova", (byte) 21);
+        userService.createUsersTable();
 
-        List<User> list = u1.getAllUsers();
-        for (User u : list) {
-            System.out.println(u.toString());
-        }
+        userService.saveUser(user1.getName(), user1.getLastName(), user1.getAge());
+        userService.saveUser(user2.getName(), user2.getLastName(), user2.getAge());
+        userService.saveUser(user3.getName(), user3.getLastName(), user3.getAge());
+        userService.saveUser(user4.getName(), user4.getLastName(), user4.getAge());
 
-        u1.cleanUsersTable();
+        List<User> allUsers = userService.getAllUsers();
+        allUsers.forEach(System.out::println);
 
-        u1.dropUsersTable();
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
     }
 }
 
