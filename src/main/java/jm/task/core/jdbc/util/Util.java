@@ -65,4 +65,7 @@ public class Util {
 
         return sessionFactory;
     }
+    public static void stop() throws Exception {
+        sessionFactory.close();
+    }
 }
