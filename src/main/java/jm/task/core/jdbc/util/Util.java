@@ -6,21 +6,22 @@ import java.sql.SQLException;
 
 
 public class Util {
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/my_db?serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String DRIVER = "org.postgresql.Driver";
+    private static final String URL = "jdbc:postgresql://localhost:5432/mydatabase";
+    private static final String USERNAME = "katyanka";
+    private static final String PASSWORD = "katyanka";
 
-    public static Connection getMySQLConnection() {
-
+    public static Connection getPostgresqlConnection() {
         Connection connection = null;
-
         try {
             Class.forName(DRIVER);
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-
-        } catch (SQLException | ClassNotFoundException e) {
+            connection = DriverManager
+                    .getConnection(URL,
+                            USERNAME, PASSWORD);
+        } catch (Exception e) {
             e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
         }
         return connection;
     }

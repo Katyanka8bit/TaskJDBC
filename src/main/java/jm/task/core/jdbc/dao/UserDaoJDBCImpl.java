@@ -13,12 +13,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        try (Statement st = Util.getMySQLConnection().createStatement()) {
-            st.execute("create table if not exists Users (" +
-                    "ID bigint primary key auto_increment," +
+        try (Statement st = Util.getPostgresqlConnection().createStatement()) {
+            st.execute("create table if not exists USERS (" +
+                    "id SERIAL NOT NULL PRIMARY KEY," +
                     "Name varchar(15) not null," +
                     "LastName varchar(15)," +
-                    "Age tinyint)");
+                    "Age smallint)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,8 +26,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        try (Statement st = Util.getMySQLConnection().createStatement()) {
-            st.execute("drop table if exists Users");
+        try (Statement st = Util.getPostgresqlConnection().createStatement()) {
+            st.execute("drop table if exists USERS");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,8 +35,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        String sql = "insert into Users (Name, LastName, Age) values (?, ?, ?)";
-        try (PreparedStatement st = Util.getMySQLConnection().prepareStatement(sql)) {
+        String sql = "insert into USERS (Name, LastName, Age) values (?, ?, ?)";
+        try (PreparedStatement st = Util.getPostgresqlConnection().prepareStatement(sql)) {
             st.setString(1, name);
             st.setString(2, lastName);
             st.setByte(3, age);
@@ -49,8 +49,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        String sql = "delete from Users where ID = ?";
-        try (PreparedStatement st = Util.getMySQLConnection().prepareStatement(sql)) {
+        String sql = "delete from USERS where ID = ?";
+        try (PreparedStatement st = Util.getPostgresqlConnection().prepareStatement(sql)) {
             st.setLong(1, id);
             st.executeUpdate();
         } catch (SQLException e) {
@@ -61,8 +61,8 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        try (Statement st = Util.getMySQLConnection().createStatement()) {
-            ResultSet resultSet = st.executeQuery("select * from Users");
+        try (Statement st = Util.getPostgresqlConnection().createStatement()) {
+            ResultSet resultSet = st.executeQuery("select * from USERS");
             while (resultSet.next()) {
                 User tUser = new User();
                 tUser.setId(resultSet.getLong("ID"));
@@ -79,8 +79,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        try (Statement st = Util.getMySQLConnection().createStatement()) {
-            st.execute("truncate table Users");
+        try (Statement st = Util.getPostgresqlConnection().createStatement()) {
+            st.execute("truncate table USERS");
         } catch (SQLException e) {
             e.printStackTrace();
         }
